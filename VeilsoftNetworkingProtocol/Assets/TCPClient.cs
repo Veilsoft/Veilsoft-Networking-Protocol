@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class TCPClient : MonoBehaviour
 {
-    public string serverIP = "127.0.0.1";
+    public string serverIP = "35.182.205.105";
     public int serverPort = 7777;
 
     private TcpClient client;
@@ -36,7 +36,17 @@ public class TCPClient : MonoBehaviour
         }
     }
 
-    public void SendMessageToServer()
+    public void OnSendButtonClicked() {
+        string message = inputField.text.Trim();
+        if (string.IsNullOrEmpty(message)) {
+            Debug.LogWarning("Cannot send an empty message!");
+            return;
+        }
+
+        SendMessageToServer(message);
+    }
+
+    void SendMessageToServer(string message)
     {
         if (client == null || !client.Connected)
         {
@@ -44,7 +54,6 @@ public class TCPClient : MonoBehaviour
             return;
         }
 
-        string message = inputField.text;
         byte[] data = Encoding.ASCII.GetBytes(message);
         stream.Write(data, 0, data.Length);
 
